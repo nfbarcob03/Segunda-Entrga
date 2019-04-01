@@ -127,9 +127,10 @@ hbs.registerHelper('listarCursosAdmin', ()=>{
 });
 
 hbs.registerHelper('lista_inscritos', ()=>{
+	let texto="";
 	listaCursos=require('./listado_cursos.json');
-	let texto= "<div class='accordion' id='accordionExample'>";
-	i=1
+	texto= "<div class='accordion' id='accordionExample'>";
+	i=1;
 	listaCursos.forEach(curso=> {
 		texto=texto +
 			   `<div class="card">\
@@ -153,37 +154,40 @@ hbs.registerHelper('lista_inscritos', ()=>{
 				    </tr>\
 				  </thead>\
 				  <tbody>';
-					i=1
 					try{
 					c=curso.nombre.split(' ');
 					listaUnCursos=require('../'+c[0]+'.json');
-
+					if(listaUnCursos.length==0){
+						throw new Exception();
+					}
 					listaUnCursos.forEach(est=> {
 						texto=texto +`
 							    <tr>
-							    <form action="/eliminarEstudiante" method="post">
-							    	<input type="hidden" name="curso" value="${curso.nombre}">
-								    <input type="hidden" name="identificacion" value="${est.identificacion}">
+							   
+							    	
 								    <th scope="row" >${est.identificacion}</th>
-								    <input type="hidden" name="nombre" value="${est.estudiante}">
 							      	<td>${est.estudiante}</td>
-							      	<input type="hidden" name="email" value="${est.email}">
 							      	<td >${est.email}</td>
-							      	<input type="hidden" name="tel" value="${est.telefono}">
 							      	<td>${est.telefono}</td>
+							    <form action="/eliminarEstudiante" method="post">
+							      	<input type="hidden" name="curso" value="${curso.nombre}">
+								    <input type="hidden" name="identificacion" value="${est.identificacion}">
+							      	<input type="hidden" name="email" value="${est.email}">
+								    <input type="hidden" name="nombre" value="${est.estudiante}">
+							      	<input type="hidden" name="tel" value="${est.telefono}">
 							      	<td><button class="btn btn-primary mb-2">Eliminar</button></td>
-							     </form>
-							    </tr>`
-							  i=i+1;
+							    </form>
+							    </tr>`;
 					});
 				}catch(error){
 					texto=texto +
-							    '<tr>\
-							      <th scope="row">No hay aun estudiantes</th>\
-							      <td>No hay aun estudiantes</td> \
-							      <td>No hay aun estudiantes</td>\
-							      <td>No hay aun estudiantes</td>\
-							    </tr>'
+							    `<tr>
+							      <th scope="row" >No hay aun estudiantes</th>
+							      <td>No hay aun estudiantes</td>
+							      <td>No hay aun estudiantes</td>
+							      <td>No hay aun estudiantes</td>
+							      <td>No hay aun estudiantes</td>
+							    </tr>`
 				} 
 					texto=texto+'  </tbody></table>';
 					i=i+1;

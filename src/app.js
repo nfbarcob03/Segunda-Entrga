@@ -34,15 +34,6 @@ app.get('/',(req,res)=>{
 	});
 });
 
-app.post('/calculos', (req, res)=>{
-	res.render('calculos', {
-		titulo:'Promedio Estudiante ',
-		estudiante: req.body.nombre,
-		nota1:parseInt(req.body.nota1),
-		nota2:parseInt(req.body.nota2),
-		nota3:parseInt(req.body.nota3)
-	})
-})
 
 app.post('/eliminarEstudiante', (req, res)=>{
 	let identificacion=req.body.identificacion;
@@ -53,12 +44,10 @@ app.post('/eliminarEstudiante', (req, res)=>{
 	let est={estudiante:estudiante, identificacion:identificacion.toString(), email:email, telefono:telefono, curso:curso};
 	let exito=funciones.eliminarEstudiante(est);
 	if(exito){
-		console.log("listo")
 		res.render('listadoInscritos',{
-		titulo:'Listado de los Cursos'
-	})
-	}
-	else{
+		titulo:'Se ha eliminado el estudiante con Exito'
+	});
+	}else{
 		res.render('errorCurso',{
 		titulo:'Error'
 	});
@@ -150,11 +139,6 @@ app.post('/crearCurso', (req, res)=>{
 	}
 	})
 
-app.get('/listado', (req,res)=>{
-	res.render('listado',{
-		titulo:'Listado'
-	})
-})
 
 app.get('/listar_cursos', (req,res)=>{
 	res.render('listar_cursos',{
